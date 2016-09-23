@@ -1,0 +1,11 @@
+parameters:
+    gsf_email.senderemailsender_class:   GollumSF\EmailBundle\Sender\EmailSender
+    gsf_email.builderemailbuilder_class: GollumSF\EmailBundle\Builder\EmailBuilder
+
+services:
+    
+    gsf_email.sender:
+        class: '%gsf_email.senderemailsender_class%'
+    
+    gsf_email.builder:
+        class: '%gsf_email.builderemailbuilder_class%'

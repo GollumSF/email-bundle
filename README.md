@@ -1,1 +1,1 @@
-# EmailBundle
+#GollumSFEmailBundle
