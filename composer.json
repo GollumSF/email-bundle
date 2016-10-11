@@ -21,7 +21,7 @@
 		"wiki" : "https://github.com/GollumSF/email-bundle/blob/master/README.md"
 	},
 	"require" : {
-		"php" : ">=5.4",
+		"php" : ">=5.3",
 		"symfony/framework-bundle" : ">=2.7"
 	},
 	"autoload" : {
