@@ -6,6 +6,13 @@ services:
     
     gsf_email.sender:
         class: '%gsf_email.senderemailsender_class%'
+        arguments:
+            - '@gsf_email.builder'
+            - '@mailer'
     
     gsf_email.builder:
         class: '%gsf_email.builderemailbuilder_class%'
+        arguments:
+            - '@http_kernel'
+            - '@request_stack'
+            - '@translator'
