@@ -9,7 +9,7 @@ php:
 before_script:
     - composer install --dev
 
-script: phpunit --coverage-text
+script: phpunit --whitelist=./ --coverage-text --coverage-html=coverage-html
 
 notifications:
     email:
