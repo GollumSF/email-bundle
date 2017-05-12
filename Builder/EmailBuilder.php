@@ -17,6 +17,9 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class EmailBuilder implements EmailBuilderInterface{
 	
+	const HEADER_SUBJECT  = 'mail-subject';
+	const HEADER_ALT_TEXT = 'mail-text';
+	
 	/**
 	 * @var HttpKernel
 	 */
@@ -60,19 +63,15 @@ class EmailBuilder implements EmailBuilderInterface{
 			throw new LogicException(sprintf("The mail action %s must be returned a %s ", $mailAction, Response::class));
 		}
 		if (!$response->isSuccessful()) {
-			throw new EmailResponseException(sprintf("The mail action %s response not is successful. Statut code = %s", $mailAction, $response->getStatusCode()), $response);
+			throw new EmailResponseException(sprintf("The mail action %s response not is successful. Statut code = %s : content: %s", $mailAction, $response->getStatusCode(), html_entity_decode(strip_tags($response->getContent()))), $response);
 		}
 		$body = $response->getContent();
 		
-		if (!$subject && array_key_exists('Mail-Subject', $response->headers)) {
-			$subject = $this->translator->trans($response->headers['Mail-Subject']);
+		if (!$subject) {
+			$subject = $this->translator->trans($response->headers->get(self::HEADER_SUBJECT));
 		}
 		
-		if (!$subject && array_key_exists('Mail-Text', $response->headers)) {
-			$text = $this->translator->trans($response->headers['Mail-Text']);
-			$email->setText($text);
-		}
-		
+		$email->setText($response->headers->get(self::HEADER_ALT_TEXT));
 		$email->setSubject($subject);
 		$email->setBody($body);
 		

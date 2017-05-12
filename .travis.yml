@@ -1,7 +1,6 @@
 language: php
 
 php:
-    - 5.5
     - 5.6
     - 7.0
     - hhvm
@@ -17,6 +16,10 @@ matrix:
       env: SYMFONY_VERSION=3.0.*
   allow_failures:
     - php: hhvm
+
+before_install:
+    # If PHP >= 7.0, force use of PHPunit 5.7
+    - mkdir ~/bin ; if php -r "exit( (int)! version_compare( '$TRAVIS_PHP_VERSION', '7.0', '>=' ) );"; then wget -O ~/bin/phpunit https://phar.phpunit.de/phpunit-6.1.3.phar; else wget -O ~/bin/phpunit https://phar.phpunit.de/phpunit-5.7.phar; fi ; chmod +x ~/bin/phpunit
   
 before_script:
     - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
@@ -24,9 +27,16 @@ before_script:
     
 install: composer update --prefer-dist --no-interaction $COMPOSER_FLAGS
 
-script: phpunit  --coverage-text
+script: ~/bin/phpunit  --coverage-text
 
 notifications:
+    discord:
+        channels:
+          - 312160566291971:V7pRJV-3rzpjDuYxKIlbQ7Eihfg4PlIUShhesTdyg4IlRK0G7Akr_jm7SjzK-oqgFc6N
+        pull_request_template:
+          - 'Build [#%{build_number}](%{build_url}) ([%{commit}](%{compare_url})) of %{repository}@%{branch} in PR [#%{pull_request_number}](%{pull_request_url}) by %{author} %{result} in %{duration}'
+        branch_template:
+          - 'Build [#%{build_number}](%{build_url}) ([%{commit}](%{compare_url})) of %{repository}@%{branch} by %{author} %{result} in %{duration}'
     slack: redori:zPaW8aAbTCF9NJh13BtWq9UV
     email:
         - smeagolworms4@gmail.com
