@@ -10,7 +10,7 @@
 		"builder"
 	],
 	"homepage" : "https://github.com/GollumSF/email-bundle",
-	"license" : "GPLv3",
+	"license" : "GPL-3.0-or-later",
 	"authors" : [{
 			"name" : "Damien Duboeuf",
 			"email" : "smeagolworms4@gmail.com"
