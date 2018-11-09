@@ -6,7 +6,6 @@ use GollumSF\EmailBundle\Model\Email;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -21,7 +20,7 @@ class EmailBuilder implements EmailBuilderInterface{
 	const HEADER_ALT_TEXT = 'mail-text';
 	
 	/**
-	 * @var HttpKernel
+	 * @var HttpKernelInterface
 	 */
 	private $httpKernel;
 	
@@ -35,7 +34,11 @@ class EmailBuilder implements EmailBuilderInterface{
 	 */
 	private $translator;
 	
-	public function __construct(HttpKernel $httpKernel, RequestStack $requestStack, TranslatorInterface $translator) {
+	public function __construct(
+		HttpKernelInterface $httpKernel,
+		RequestStack $requestStack,
+		TranslatorInterface $translator
+	) {
 		$this->httpKernel = $httpKernel;
 		$this->requestStack = $requestStack;
 		$this->translator = $translator;
@@ -100,7 +103,7 @@ class EmailBuilder implements EmailBuilderInterface{
 			->setCc  ($cc)
 			->setBcc ($bcc)
 			->setFrom($from)
-			;
+		;
 	}
 	
 	/**

@@ -21,7 +21,10 @@ class EmailSender implements EmailSenderInterface {
 	 */
 	private $mailer;
 	
-	public function __construct(EmailBuilderInterface $emailBuilder, \Swift_Mailer $mailer) {
+	public function __construct(
+		EmailBuilderInterface $emailBuilder,
+		\Swift_Mailer $mailer
+	) {
 		$this->emailBuilder = $emailBuilder;
 		$this->mailer = $mailer;
 	}

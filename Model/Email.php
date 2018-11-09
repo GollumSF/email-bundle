@@ -217,7 +217,7 @@ class Email {
 	 * @return \Swift_Message
 	 */
 	public function toSwiftMessage() {
-		$message = \Swift_Message::newInstance();
+		$message = new \Swift_Message();
 		
 		$message->setSubject($this->getSubject());
 		$message->setBody($this->getBody(), 'text/html');
