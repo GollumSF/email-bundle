@@ -24,9 +24,9 @@ class Email {
 	protected $bcc = [];
 	
 	/**
-	 * @var array
+	 * @var string
 	 */
-	protected $from = [];
+	protected $from = null;
 	
 	/**
 	 * @var string
@@ -133,7 +133,7 @@ class Email {
 	 * @param array $from
 	 * @return self
 	 */
-	public function setFrom(array $from) {
+	public function setFrom(?string $from) {
 		$this->from = $from;
 		return $this;
 	}
@@ -196,18 +196,6 @@ class Email {
 		$this->bcc[] = $mail;
 		return $this;
 	}
-	
-	/**
-	 * @param string $mail
-	 * @param string $name
-	 * @return self
-	 */
-	public function addFrom($mail, $name = NULL) {
-		$name = $name ? $name : $mail;
-		$this->from[$name] = $mail;
-		return $this;
-	}
-	
 	
 	////////////
 	// Others //

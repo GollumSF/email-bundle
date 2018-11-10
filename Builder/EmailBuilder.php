@@ -94,7 +94,6 @@ class EmailBuilder implements EmailBuilderInterface{
 		$to   = $this->parseMails($to);
 		$cc   = $this->parseMails($cc);
 		$bcc  = $this->parseMails($bcc);
-		$from = $this->parseMails($from, true);
 		
 		return (new Email())
 			->setBody($body)
@@ -116,19 +115,16 @@ class EmailBuilder implements EmailBuilderInterface{
 		return $request->duplicate([], [], array_merge($params, [ "_controller" => $mailAction ]));
 	}
 	
-	private function parseMails($emails, $isFrom = false) {
+	private function parseMails($emails) {
 		$emails = is_string($emails) ? [ $emails  ] : (is_array($emails) ? $emails  : []);
-		if ($isFrom) {
-			$results = [];
-			foreach ($emails as $name => $email) {
-				if (is_int($name)) {
-					$name = $email;
-				}
-				$results[$name] = $email;
+		$results = [];
+		foreach ($emails as $name => $email) {
+			if (is_int($name)) {
+				$name = $email;
 			}
-			$emails = $results;
+			$results[$name] = $email;
 		}
-		return $emails;
+		return $results;
 	}
 	
 }
