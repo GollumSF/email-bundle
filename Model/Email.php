@@ -244,11 +244,9 @@ class Email {
 			$message->$method($bcc);
 			$first = false;
 		}
-		$first = true;
-		foreach ($this->getBcc() as $i => $from) {
-			$method = $first ? 'setFrom' : 'addFrom';
-			$message->$method($from);
-			$first = false;
+		
+		if ($this->getFrom()) {
+			$message->setFrom($this->getFrom());
 		}
 		
 		return $message;
