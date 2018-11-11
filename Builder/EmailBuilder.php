@@ -3,6 +3,7 @@ namespace GollumSF\EmailBundle\Builder;
 use GollumSF\EmailBundle\Exception\EmailResponseException;
 use GollumSF\EmailBundle\Exception\LogicException;
 use GollumSF\EmailBundle\Model\Email;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,14 +35,23 @@ class EmailBuilder implements EmailBuilderInterface{
 	 */
 	private $translator;
 	
+	/** @var string/ */
+	private $senderAddress;
+	
 	public function __construct(
 		HttpKernelInterface $httpKernel,
 		RequestStack $requestStack,
-		TranslatorInterface $translator
+		TranslatorInterface $translator,
+		ContainerInterface $container
 	) {
 		$this->httpKernel = $httpKernel;
 		$this->requestStack = $requestStack;
 		$this->translator = $translator;
+		$this->senderAddress =
+			$container->hasParameter('swiftmailer.sender_address') ?
+			$container->getParameter('swiftmailer.sender_address') :
+			NULL
+		;
 	}
 	
 	/**
@@ -94,6 +104,10 @@ class EmailBuilder implements EmailBuilderInterface{
 		$to   = $this->parseMails($to);
 		$cc   = $this->parseMails($cc);
 		$bcc  = $this->parseMails($bcc);
+		
+		if (!$from && $this->senderAddress) {
+			$from = $this->senderAddress;
+		}
 		
 		return (new Email())
 			->setBody($body)
